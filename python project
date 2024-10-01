@@ -1,0 +1,54 @@
+import pandas as pd 
+import matplotlib.pyplot as plt 
+import seaborn as sns 
+odi_match_data = pd.read_csv('/kaggle/input/odi-mens-cricket-match-data-2002-2023/ODI_Match_Data.csv', 
+low_memory=False) 
+odi_match_info = pd.read_csv('/kaggle/input/odi-mens-cricket-match-data-2002-2023/ODI_Match_info.csv') 
+print("Sample Data from ODI Match Data:") 
+odi_match_data.head() 
+print("\nSample Data from ODI Match Info:") 
+odi_match_info.head() 
+print("\nBasic Statistics:") 
+odi_match_data.describe() 
+print("\nBasic Statistics for Match Info Data:") 
+odi_match_info.describe() 
+plt.figure(figsize=(12, 6)) 
+sns.set(style="whitegrid") 
+sns.countplot(data=odi_match_data, x="season") 
+plt.xticks(rotation=90) 
+plt.title("Number of Matches per Season") 
+plt.xlabel("Season") 
+plt.ylabel("Number of Matches") 
+plt.show() 
+plt.figure(figsize=(8, 8)) 
+odi_match_data['innings'].value_counts().plot.pie(autopct='%1.1f%%', startangle=90) 
+plt.title("Innings Distribution") 
+plt.axis('equal') 
+plt.show() 
+plt.figure(figsize=(12, 6)) 
+sns.set(style="whitegrid") 
+sns.countplot(data=odi_match_info, x="winner") 
+plt.xticks(rotation=90) 
+plt.title("Number of Matches Won by Each Team") 
+plt.xlabel("Team") 
+plt.ylabel("Number of Matches Won") 
+plt.show() 
+top_n_cities = 10 
+top_cities = odi_match_info['city'].value_counts().nlargest(top_n_cities).index 
+# Filter the data for the top cities 
+filtered_odi_match_info = odi_match_info[odi_match_info['city'].isin(top_cities)] 
+# Create a bar plot to visualize the number of matches in the top cities 
+plt.figure(figsize=(12, 6)) 
+sns.set(style="whitegrid") 
+sns.countplot(data=filtered_odi_match_info, x="city", order=filtered_odi_match_info["city"].value_counts().index) 
+plt.xticks(rotation=90) 
+plt.title(f"Top {top_n_cities} Cities with the Most Matches (Match Info Data)") 
+plt.xlabel("City") 
+plt.ylabel("Number of Matches") 
+plt.show() 
+plt.figure(figsize=(8, 8)) 
+odi_match_info['toss_decision'].value_counts().plot.pie(autopct='%1.1f%%', startangle=90) 
+plt.title("Toss Decision Distribution (Match Info Data)") 
+plt.axis('equal') 
+plt.show()
+
